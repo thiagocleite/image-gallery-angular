@@ -1,10 +1,7 @@
-<<<<<<< HEAD
 # image-gallery-angular
 Prototipo de galeria de imagem em angular
 
 ## Galeria de imagem feita em angular com checkbox para manipulacao de imagens
-=======
-# ImageGallery
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.8.
 
