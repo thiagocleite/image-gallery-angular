@@ -45,11 +45,11 @@ export class AppComponent implements OnInit {
       img: 'https://source.unsplash.com/VSeVhmW4_JQ',
     },
     {
-      id: 9,
+      id: 10,
       img: 'https://source.unsplash.com/07aFaTf24Kg',
     },
     {
-      id: 10,
+      id: 11,
       img: 'https://source.unsplash.com/DqyYTM7pR2o',
     },
   ];
@@ -78,13 +78,14 @@ export class AppComponent implements OnInit {
   }
 
   public onClickImg(e: any) {
-
     if (this.imgsSelected.length > 0) {
       return;
     }
 
+    let index = this.imgs.findIndex(x=>x.id == e.target.id);
+
     this.modalGallery = true;
-    this.imageToLoad = this.imgs[e.target.id].img;
+    this.imageToLoad = this.imgs[index].img;
   }
 
   public onClickCloseModal(e: any) {
