@@ -130,3 +130,14 @@ input[type="checkbox"]:checked:after {
   content: "\f058";
   color: #478bfb;
 }
+
+.true-image{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.true-image img{
+  height: 90%;
+}

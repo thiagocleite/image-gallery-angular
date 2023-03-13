@@ -58,6 +58,8 @@ export class AppComponent implements OnInit {
 
   public modalGallery:boolean = false;
 
+  public imageToLoad:string = "";
+
   constructor() {}
 
   ngOnInit(): void {}
@@ -77,5 +79,11 @@ export class AppComponent implements OnInit {
 
   public onClickImg(e: any) {
     this.modalGallery = true;
+    this.imageToLoad = this.imgs[e.target.id].img;
+  }
+
+  public onClickCloseModal(e:any)
+  {
+    this.modalGallery = false;
   }
 }

@@ -1,18 +1,30 @@
 <div [hidden]="imgsSelected.length == 0" class="menu-gallery">
-  <button mat-raised-button color="primary" (click)="showImgsSelected($event)">Imagens selecionadas</button>
-</div>
-<div [hidden]="!modalGallery" class="modal-gallery">
-<div>
-  <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon">
-    <mat-icon>Close</mat-icon>
+  <button mat-raised-button color="primary" (click)="showImgsSelected($event)">
+    Imagens selecionadas
   </button>
 </div>
+
+<div [hidden]="!modalGallery" class="modal-gallery">
+  <div style="position:absolute; left:90%; top:30px;">
+    <button
+      mat-mini-fab
+      color="primary"
+      aria-label="Example icon button with a menu icon"
+      (click)="onClickCloseModal($event)"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="true-image">
+    <img [src]="imageToLoad">
+  </div>
 </div>
+
 <div class="container">
   <ul class="image-gallery">
     <li *ngFor="let data of imgs">
       <input type="checkbox" [id]="data.id" (change)="onImgSelected($event)" />
-      <img [src]="data.img" alt="" (click)="onClickImg($event)" />
+      <img [src]="data.img" [id]="data.id" alt="" (click)="onClickImg($event)" />
     </li>
   </ul>
 </div>
