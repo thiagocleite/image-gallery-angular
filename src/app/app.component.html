@@ -21,8 +21,15 @@
 </div>
 
 <div class="container">
-  <ul class="image-gallery">
-    <li *ngFor="let data of imgs">
+  <ul
+  class="image-gallery"
+  infinite-scroll
+  [infiniteScrollDistance]="1"
+  [infiniteScrollThrottle]="300"
+  [infiniteScrollDisabled]="isFullListDisplayed"
+  (scrolled)="onScrollDown()"
+  >
+    <li *ngFor="let data of imgsToShow">
       <input type="checkbox" [id]="data.id" (change)="onImgSelected($event)" />
       <img [src]="data.img" [id]="data.id" alt="" (click)="onClickImg($event)" />
     </li>

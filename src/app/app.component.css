@@ -20,7 +20,7 @@ Responsive Image gallery Style rules
 }
 
 .modal-gallery{
-  position:absolute;
+  position:fixed;
   background-color: #000000c8;
   z-index: 200;
   width: 100%;
