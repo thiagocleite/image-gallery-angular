@@ -56,9 +56,9 @@ export class AppComponent implements OnInit {
 
   public imgsSelected: number[] = [];
 
-  public modalGallery:boolean = false;
+  public modalGallery: boolean = false;
 
-  public imageToLoad:string = "";
+  public imageToLoad: string = '';
 
   constructor() {}
 
@@ -78,12 +78,16 @@ export class AppComponent implements OnInit {
   }
 
   public onClickImg(e: any) {
+
+    if (this.imgsSelected.length > 0) {
+      return;
+    }
+
     this.modalGallery = true;
     this.imageToLoad = this.imgs[e.target.id].img;
   }
 
-  public onClickCloseModal(e:any)
-  {
+  public onClickCloseModal(e: any) {
     this.modalGallery = false;
   }
 }
