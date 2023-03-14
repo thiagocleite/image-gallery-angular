@@ -1,37 +1,85 @@
-<div [hidden]="imgsSelected.length == 0" class="menu-gallery">
-  <button mat-raised-button color="primary" (click)="showImgsSelected($event)">
-    Imagens selecionadas
-  </button>
-</div>
-
-<div [hidden]="!modalGallery" class="modal-gallery">
-  <div style="position:absolute; left:90%; top:30px;">
+<ng-template [ngIf]="showImgs">
+  <div [hidden]="imgsSelected.length == 0" class="menu-gallery">
     <button
-      mat-mini-fab
+      mat-raised-button
       color="primary"
-      aria-label="Example icon button with a menu icon"
-      (click)="onClickCloseModal($event)"
+      (click)="showImgsSelected($event)"
     >
-      <mat-icon>close</mat-icon>
+      Imagens selecionadas
     </button>
   </div>
-  <div class="true-image">
-    <img [src]="imageToLoad">
-  </div>
-</div>
 
-<div class="container">
-  <ul
-  class="image-gallery"
-  infinite-scroll
-  [infiniteScrollDistance]="1"
-  [infiniteScrollThrottle]="300"
-  [infiniteScrollDisabled]="isFullListDisplayed"
-  (scrolled)="onScrollDown()"
-  >
-    <li *ngFor="let data of imgsToShow">
-      <input type="checkbox" [id]="data.id" (change)="onImgSelected($event)" />
-      <img [src]="data.img" [id]="data.id" alt="" (click)="onClickImg($event)" />
-    </li>
-  </ul>
-</div>
+  <div [hidden]="!modalGallery" class="modal-gallery">
+    <div style="position: absolute; left: 90%; top: 20px">
+      <button
+        mat-mini-fab
+        color="primary"
+        (click)="onClickCloseModal($event)"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div class="next-image">
+      <button
+        mat-mini-fab
+        style="background-color: goldenrod;"
+        (click)="onClickNextImage($event)"
+      >
+        <mat-icon>navigate_next</mat-icon>
+      </button>
+    </div>
+
+    <div class="prev-image">
+      <button
+        mat-mini-fab
+        style="background-color: goldenrod;"
+        (click)="onClickPrevImage($event)"
+      >
+        <mat-icon>navigate_before</mat-icon>
+      </button>
+    </div>
+
+    <div
+    style="position: fixed;color:white; bottom: 0; width: 100%; background-color: black; text-align: center;"
+    >
+    {{modalImageIndex+1}} de {{imgs.length}}
+    <br>
+    {{modalImage}}
+    </div>
+
+    <div class="modal-image">
+      <img [src]="modalImage" />
+    </div>
+  </div>
+
+  <div class="container">
+    <ul
+      class="image-gallery"
+      infinite-scroll
+      [infiniteScrollDistance]="1"
+      [infiniteScrollThrottle]="300"
+      [infiniteScrollDisabled]="isFullListDisplayed"
+      (scrolled)="onScrollDown()"
+    >
+      <li *ngFor="let data of imgs; let l = last">
+        <input
+          type="checkbox"
+          [id]="data.id"
+          (change)="onImgSelected($event)"
+        />
+        <img
+          [src]="data.img"
+          [id]="data.id"
+          alt=""
+          (click)="onClickImg($event)"
+          (load)="onImageLoaded($event, l)"
+        />
+        <div class="image-options">
+          <i (click)="log($event)" class="fas fa-trash-alt"></i>
+          <i (click)="log($event)" class="fas fa-share-square"></i>
+        </div>
+      </li>
+    </ul>
+  </div>
+</ng-template>

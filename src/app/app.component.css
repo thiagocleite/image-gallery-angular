@@ -8,21 +8,21 @@ Responsive Image gallery Style rules
   box-sizing: border-box;
 }
 
-.menu-gallery{
-  position:fixed;
+.menu-gallery {
+  position: fixed;
   background-color: #478bfb;
   width: 90%;
-  margin:auto;
+  margin: auto;
   z-index: 2;
   transform: translateX(-50%);
   left: 50%;
   border-radius: 5px;
 }
 
-.modal-gallery{
-  position:fixed;
+.modal-gallery {
+  position: fixed;
   background-color: #000000c8;
-  z-index: 200;
+  z-index: 10;
   width: 100%;
   height: 100%;
 }
@@ -57,6 +57,8 @@ ul {
   height: 300px;
   cursor: pointer;
   position: relative;
+  overflow: hidden;
+  border-radius: 5px;
 }
 
 .image-gallery::after {
@@ -69,55 +71,64 @@ ul {
   width: 100%;
   height: 100%;
   vertical-align: middle;
-  border-radius: 5px;
+  transition: 0.3s;
 }
 
-.image-gallery li:hover > input[type="checkbox"]{
-  display:block;
+.image-gallery li:hover > img {
+  transform: scale(1.05);
+}
+
+.image-gallery li:hover > input[type="checkbox"] {
+  display: block;
 }
 
 .image-gallery li input[type="checkbox"]:checked {
-  display:block;
+  display: block;
   font-weight: 900;
   content: "\f058";
   color: #478bfb;
 }
 
-.overlay {
+.image-options {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  background: rgba(57, 57, 57, 0.502);
-  top: 0;
-  left: 0;
-  transform: scale(0);
-  transition: all 0.2s 0.1s ease-in-out;
-  color: #fff;
-  border-radius: 5px;
-  /* center overlay content */
+  bottom: 10px;
+  right: 5px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  gap:5px;
 }
 
-/* hover */
-.image-gallery li:hover .overlay {
-  transform: scale(1);
+.image-options i{
+  padding: 10px;
+  border-radius: 100%;
+  background-color: #478bfb;
+  color:#FFF;
+  display: none;
+  transition: .3s;
+  opacity: 0.6;
+}
+
+.image-options i:hover{
+  opacity: 1;
+}
+
+.image-gallery li:hover > .image-options i{
+  display: block;
 }
 
 input[type="checkbox"] {
   -webkit-appearance: none;
-  position: relative;
-  top:10px;
+  position: absolute;
+  top: 10px;
   width: 100%;
   cursor: pointer;
   display: none;
+  z-index: 3;
 }
 
 input[type="checkbox"]:after {
   position: absolute;
   font-family: "Font Awesome 5 Free";
-  font-weight: 400;
+  font-weight: 900;
   content: "\f111";
   font-size: 18px;
   color: #478bfb;
@@ -131,15 +142,30 @@ input[type="checkbox"]:checked:after {
   color: #478bfb;
 }
 
-.true-image{
+.modal-image {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
+  transition: .3s;
 }
 
-.true-image img{
+.modal-image img {
   max-width: 80%;
-  height: 90%;
+  max-height: 90%;
   object-fit: contain;
+}
+
+.next-image{
+  position: fixed;
+  top:50%;
+  right: 10px;
+  z-index: 15;
+}
+
+.prev-image{
+  position: fixed;
+  top:50%;
+  left: 10px;
+  z-index: 15;
 }

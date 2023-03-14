@@ -1,5 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
+import { ImageGallery } from './gallery-image';
 
 @Component({
   selector: 'app-root',
@@ -7,164 +14,29 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  public imgs = [
-    {
-      id: 1,
-      img: 'https://source.unsplash.com/VWcPlbHglYc',
-    },
-    {
-      id: 2,
-      img: 'https://source.unsplash.com/e6FMMambeO4',
-    },
-    {
-      id: 3,
-      img: 'https://source.unsplash.com/klCiPmzUw0Y',
-    },
-    {
-      id: 4,
-      img: 'https://source.unsplash.com/IdNOTjPeHrE',
-    },
-    {
-      id: 5,
-      img: 'https://source.unsplash.com/O0N9MF--hK4',
-    },
-    {
-      id: 6,
-      img: 'https://source.unsplash.com/FV3GConVSss',
-    },
-    {
-      id: 7,
-      img: 'https://source.unsplash.com/0ESjL-Nw22Y',
-    },
-    {
-      id: 8,
-      img: 'https://source.unsplash.com/KTVn62x6fFw',
-    },
-    {
-      id: 9,
-      img: 'https://source.unsplash.com/VSeVhmW4_JQ',
-    },
-    {
-      id: 10,
-      img: 'https://source.unsplash.com/07aFaTf24Kg',
-    },
-    {
-      id: 11,
-      img: 'https://source.unsplash.com/DqyYTM7pR2o',
-    },
-    {
-      id: 12,
-      img: 'https://source.unsplash.com/VWcPlbHglYc',
-    },
-    {
-      id: 13,
-      img: 'https://source.unsplash.com/e6FMMambeO4',
-    },
-    {
-      id: 14,
-      img: 'https://source.unsplash.com/klCiPmzUw0Y',
-    },
-    {
-      id: 15,
-      img: 'https://source.unsplash.com/IdNOTjPeHrE',
-    },
-    {
-      id: 16,
-      img: 'https://source.unsplash.com/O0N9MF--hK4',
-    },
-    {
-      id: 17,
-      img: 'https://source.unsplash.com/FV3GConVSss',
-    },
-    {
-      id: 18,
-      img: 'https://source.unsplash.com/0ESjL-Nw22Y',
-    },
-    {
-      id: 19,
-      img: 'https://source.unsplash.com/KTVn62x6fFw',
-    },
-    {
-      id: 20,
-      img: 'https://source.unsplash.com/VSeVhmW4_JQ',
-    },
-    {
-      id: 21,
-      img: 'https://source.unsplash.com/07aFaTf24Kg',
-    },
-    {
-      id: 22,
-      img: 'https://source.unsplash.com/DqyYTM7pR2o',
-    },
-    {
-      id: 23,
-      img: 'https://source.unsplash.com/DqyYTM7pR2o',
-    },
-    {
-      id: 24,
-      img: 'https://source.unsplash.com/VWcPlbHglYc',
-    },
-    {
-      id: 25,
-      img: 'https://source.unsplash.com/e6FMMambeO4',
-    },
-    {
-      id: 26,
-      img: 'https://source.unsplash.com/klCiPmzUw0Y',
-    },
-    {
-      id: 27,
-      img: 'https://source.unsplash.com/IdNOTjPeHrE',
-    },
-    {
-      id: 28,
-      img: 'https://source.unsplash.com/O0N9MF--hK4',
-    },
-    {
-      id: 29,
-      img: 'https://source.unsplash.com/FV3GConVSss',
-    },
-    {
-      id: 30,
-      img: 'https://source.unsplash.com/0ESjL-Nw22Y',
-    },
-    {
-      id: 31,
-      img: 'https://source.unsplash.com/KTVn62x6fFw',
-    },
-    {
-      id: 32,
-      img: 'https://source.unsplash.com/VSeVhmW4_JQ',
-    },
-    {
-      id: 33,
-      img: 'https://source.unsplash.com/07aFaTf24Kg',
-    },
-    {
-      id: 34,
-      img: 'https://source.unsplash.com/DqyYTM7pR2o',
-    },
-  ];
+  public imgs: ImageGallery[] = [];
 
   public imgsSelected: number[] = [];
 
   public modalGallery: boolean = false;
 
-  public imageToLoad: string = '';
+  public modalImage: string = '';
 
+  public showImgs: boolean = false;
 
-  private noOfItemsToShowInitially: number = 20;
+  public pageSize = 15;
 
-  private imgsToLoad: number = 20;
-
-  public imgsToShow = this.imgs.slice(0, this.noOfItemsToShowInitially);
+  public pagination = 1;
 
   public isFullListDisplayed: boolean = false;
 
+  public modalImageIndex: number = 0;
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.onScrollDown();
+  }
 
   public onImgSelected(e: any) {
     this.selectDeselectImage(e.target);
@@ -175,45 +47,95 @@ export class AppComponent implements OnInit {
   }
 
   public onClickImg(e: any) {
-
     if (this.imgsSelected.length > 0) {
-
       const el = document.querySelector(`input[id="${e.target.id}"]`) as any;
       el.checked = !el.checked;
       this.selectDeselectImage(el);
       return;
-
     }
 
-    let index = this.imgs.findIndex(x=>x.id == e.target.id);
+    let index = this.imgs.findIndex((x) => x.id == e.target.id);
 
     this.modalGallery = true;
-    this.imageToLoad = this.imgs[index].img;
-    console.log(e.target.id);
+    this.modalImage = this.imgs[index].img;
+    this.modalImageIndex = index;
   }
 
   public onClickCloseModal(e: any) {
     this.modalGallery = false;
   }
 
-  public onScrollDown()
-  {
-    if (this.noOfItemsToShowInitially <= this.imgs.length) {
-      this.noOfItemsToShowInitially += this.imgsToLoad;
-      this.imgsToShow = this.imgs.slice(0, this.noOfItemsToShowInitially);
-      console.log("scrolled");
-  } else {
-      this.isFullListDisplayed = true;
-  }
+  public onScrollDown() {
+    if (!this.isFullListDisplayed) {
+      this.http
+        .get<ImageGallery[]>(
+          `http://localhost:3000/imgs?_page=${this.pagination}&_limit=${this.pageSize}`
+        )
+        .subscribe({
+          next: (result) => {
+            this.imgs.push(...result);
+            this.showImgs = true;
+            this.pagination++;
+            if (result.length < this.pageSize) {
+              this.isFullListDisplayed = true;
+            }
+          },
+          error: (err) => {
+            console.log(err);
+          },
+        });
+    }
   }
 
-  private selectDeselectImage(data:any)
-  {
+  public onImageLoaded(e: any, last: boolean) {
+    if (document.body.scrollHeight <= document.body.clientHeight) {
+      if (last) {
+        this.onScrollDown();
+      }
+    }
+  }
+
+  public onClickNextImage(e: any) {
+    if (this.modalImageIndex == this.imgs.length - 1) return;
+
+    this.modalImageIndex++;
+
+    let el = document.getElementsByClassName("modal-image").item(0) as HTMLElement;
+
+    el.style.opacity = "0";
+
+    setTimeout(()=>{
+      this.modalImage = this.imgs[this.modalImageIndex].img;
+      el.style.opacity = "1";
+    },300);
+  }
+
+  public onClickPrevImage(e: any) {
+    if (this.modalImageIndex == 0) return;
+
+    this.modalImageIndex--;
+
+    let el = document.getElementsByClassName("modal-image").item(0) as HTMLElement;
+
+    el.style.opacity = "0";
+
+    setTimeout(()=>{
+      this.modalImage = this.imgs[this.modalImageIndex].img;
+      el.style.opacity = "1";
+    },300);
+  }
+
+  private selectDeselectImage(data: any) {
     if (data.checked) {
       this.imgsSelected.push(data.id);
     } else {
       const index = this.imgsSelected.indexOf(data.id);
       this.imgsSelected.splice(index, 1);
     }
+  }
+
+  public log(e: any) {
+    console.log(document.body.scrollHeight);
+    console.log(document.body.clientHeight);
   }
 }
